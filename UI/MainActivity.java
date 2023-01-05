@@ -1,43 +1,71 @@
-package com.example.ui;
+package com.example.uicontrols;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
+    EditText name,age,pass,phoneno;
+    Button b;
+    Pattern USERNAME_PATTERN=Pattern.compile("^[A-Za-z]\\w{5,30}$");
+    Pattern PASSWORD_PATTERN =Pattern.compile("^" +"(?=.*[@#$%^&+=])" +"(?=\\S+$)" + ".{4,}" + "$");
+    Pattern AGE_PATTERN= Pattern.compile("^" + "(?=\\S+$)" + "[0-9]{1,2}" + "$");
+    Pattern PHONE_PATTERN=Pattern.compile("^(0|91)?[7-9][0-9]{9}$");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toast.makeText(getApplicationContext(), "oncreate loading...", Toast.LENGTH_SHORT).show();
-
-    }
-    protected void onStart() {
-
-        super.onStart();
-        Toast.makeText(getApplicationContext(), "Starting...", Toast.LENGTH_SHORT).show();
-    }
-    protected void onResume(){
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "Continue", Toast.LENGTH_SHORT).show();
-    }
-    protected void onPause(){
-        super.onPause();
-        Toast.makeText(getApplicationContext(), "Pausing...", Toast.LENGTH_SHORT).show();
-    }
-    protected void onRestart(){
-        super.onRestart();
-        Toast.makeText(getApplicationContext(), "Restarting", Toast.LENGTH_SHORT).show();
-    }
-    protected void onStop(){
-        super.onStop();
-        Toast.makeText(getApplicationContext(), "Stop", Toast.LENGTH_SHORT).show();
-    }
-    protected void onDestroy(){
-        super.onDestroy();
-        Toast.makeText(getApplicationContext(), "On Destroy", Toast.LENGTH_SHORT).show();
+        name=findViewById(R.id.ett1);
+        age=findViewById(R.id.eet2);
+        phoneno=findViewById(R.id.ett3);
+        pass=findViewById(R.id.ett4);
+        b=findViewById(R.id.bb1);
+        
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String n=name.getText().toString();
+                String a=age.getText().toString();
+                String p=phoneno.getText().toString();
+                String pa=pass.getText().toString();
+                
+                if(n.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Name field is empty", Toast.LENGTH_SHORT).show();
+                }
+                if(a.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Age field is Empty", Toast.LENGTH_SHORT).show();
+                }
+                if(p.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Phone field is Empty", Toast.LENGTH_SHORT).show();
+                }
+                if(pa.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Pass field is Empty", Toast.LENGTH_SHORT).show();
+                }
+                if (!USERNAME_PATTERN.matcher(n).matches()){
+                    name.setError("Enter alphabets [6-30 characters]");
+                }
+                if (!AGE_PATTERN.matcher(a).matches()) {
+                    age.setError("Incorrect Age");
+                }
+                if (!PHONE_PATTERN.matcher(p).matches()){
+                    phoneno.setError("Contains only 10 digits");
+                }
+                if (!PASSWORD_PATTERN.matcher(pa).matches()){
+                    pass.setError("Password is too weak");
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        
     }
 }
